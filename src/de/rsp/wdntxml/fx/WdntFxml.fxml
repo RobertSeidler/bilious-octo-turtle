@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.canvas.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.rsp.wdntxml.fx.FxController">
+   <children>
+      <VBox prefHeight="780.0" prefWidth="970.0">
+         <children>
+            <HBox prefHeight="800.0" prefWidth="1000.0">
+               <children>
+                  <TabPane prefHeight="800.0" prefWidth="1005.0" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                        <Tab fx:id="drawStatsTab1" text="Single Wordnet">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-border-color: #d3d3d3;">
+                                 <children>
+                                    <TabPane prefHeight="721.0" prefWidth="804.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <tabs>
+                                          <Tab text="Input">
+                                            <content>
+                                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                                   <children>
+                                                      <Pane layoutX="306.0" prefHeight="534.0" prefWidth="386.0">
+                                                         <children>
+                                                            <Button fx:id="importButton" layoutX="14.0" layoutY="139.0" mnemonicParsing="false" onAction="#handleButtonAction" text="import" />
+                                                            <ComboBox fx:id="parserChooser" layoutX="14.0" layoutY="94.0" prefHeight="25.0" prefWidth="359.0" promptText="Choose Parser" />
+                                                            <Button fx:id="fileChooseButton" layoutX="281.0" layoutY="39.0" mnemonicParsing="false" onAction="#handleFileChooserButtonPress" prefHeight="25.0" prefWidth="91.0" text="Browse ..." />
+                                                            <TextField fx:id="pathTextField" layoutX="14.0" layoutY="14.0" prefHeight="25.0" prefWidth="358.0" promptText="select path" />
+                                                            <CheckBox fx:id="synsetListCheck" layoutX="17.0" layoutY="375.0" mnemonicParsing="false" selected="true" text="generate Table Synset View" />
+                                                            <CheckBox fx:id="drawStatsCheck" layoutX="17.0" layoutY="392.0" mnemonicParsing="false" selected="true" text="generate Draw Synset Stats" />
+                                                            <Label fx:id="descriptionLabel" alignment="TOP_LEFT" layoutX="17.0" layoutY="226.0" prefHeight="143.0" prefWidth="357.0" text="Parser description" />
+                                                            <ProgressBar fx:id="progressBar" layoutX="14.0" layoutY="182.0" prefHeight="18.0" prefWidth="360.0" progress="0.0" />
+                                                            <Button fx:id="cancelButton" layoutX="282.0" layoutY="139.0" mnemonicParsing="false" onAction="#handleCancelButtonPress" prefHeight="25.0" prefWidth="91.0" text="Cancel" />
+                                                            <CheckBox fx:id="dbUploadCheckSingle" layoutX="17.0" layoutY="409.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="267.0" selected="true" text="Upload to Database" />
+                                                            <ProgressBar fx:id="dbProgress" layoutX="15.0" layoutY="200.0" prefHeight="18.0" prefWidth="359.0" progress="0.0" visible="false" />
+                                                         </children>
+                                                      </Pane>
+                                                   </children>
+                                                </AnchorPane>
+                                            </content>
+                                          </Tab>
+                                          <Tab text="Table Synset View">
+                                             <content>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-border-color: #d3d3d3;">
+                                                   <children>
+                                                      <TableView fx:id="synsetTable" editable="true" prefHeight="171.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                                        <columns>
+                                                          <TableColumn fx:id="idColumn" prefWidth="85.0" text="Synset ID" />
+                                                          <TableColumn fx:id="posColumn" prefWidth="35.0" text="pos" />
+                                                            <TableColumn fx:id="wordColumn" prefWidth="173.0" text="Words " />
+                                                            <TableColumn fx:id="relationColumn" minWidth="2.0" prefWidth="207.0" text="Relations" />
+                                                            <TableColumn fx:id="defColumn" minWidth="2.0" prefWidth="201.0" text="Definition" />
+                                                            <TableColumn fx:id="exmComlumn" minWidth="2.0" prefWidth="201.0" text="Example" />
+                                                        </columns>
+                                                      </TableView>
+                                                   </children>
+                                                </AnchorPane>
+                                             </content>
+                                          </Tab>
+                                        <Tab fx:id="drawStatsTab" text="Draw Synset Stats">
+                                          <content>
+                                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-border-color: #d3d3d3;" />
+                                          </content>
+                                        </Tab>
+                                          <Tab text="XML Output" fx:id="xmlOutputTab">
+                                             <content>
+                                                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-border-color: #d3d3d3;">
+                                                   <children>
+                                                      <TextField layoutX="23.0" layoutY="44.0" prefHeight="25.0" prefWidth="620.0" fx:id="xmlOutputDir" />
+                                                      <Button fx:id="chooseDirectoryXmlOut" layoutX="644.0" layoutY="44.0" mnemonicParsing="false" onAction="#handleDirectoryChooserButtonPress" prefHeight="25.0" prefWidth="110.0" text="choose directory" />
+                                                      <Button fx:id="createRspXmlOutput" layoutX="23.0" layoutY="167.0" mnemonicParsing="false" onAction="#handleCreateRspXmlOutputButton" prefHeight="25.0" prefWidth="102.0" text="create XML" />
+                                                   </children>
+                                                </AnchorPane>
+                                             </content>
+                                          </Tab>
+                                       </tabs>
+                                    </TabPane>
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </Tab>
+                        <Tab fx:id="compareTab" text="Multiple Wordnets">
+                           <content>
+                              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" style="-fx-border-color: #d3d3d3;">
+                                 <children>
+                                    <Pane layoutX="2.0" layoutY="2.0" prefHeight="721.0" prefWidth="804.0" AnchorPane.bottomAnchor="2.0" AnchorPane.leftAnchor="2.0" AnchorPane.rightAnchor="2.0" AnchorPane.topAnchor="2.0">
+                                       <children>
+                                          <Button fx:id="addOne" layoutX="326.0" layoutY="137.0" mnemonicParsing="false" onAction="#handleAddButtonPress" text="&gt;&gt;" />
+                                          <Button fx:id="removeOne" layoutX="326.0" layoutY="179.0" mnemonicParsing="false" onAction="#handleRemoveButtonPress" text="&lt;&lt;" />
+                                          <ListView fx:id="toAdd" layoutX="13.0" layoutY="77.0" prefHeight="188.0" prefWidth="272.0" />
+                                          <ListView fx:id="added" layoutX="398.0" layoutY="77.0" prefHeight="187.0" prefWidth="272.0" />
+                                          <Label layoutX="14.0" layoutY="14.0" text="Select WordNets to compare" textAlignment="CENTER" />
+                                          <TableView fx:id="compareTable" layoutX="14.0" layoutY="358.0" prefHeight="344.0" prefWidth="657.0">
+                                            <columns>
+                                              <TableColumn fx:id="langCompareTab" prefWidth="101.0" text="WordNetLang" />
+                                              <TableColumn fx:id="synsetCompareTab" prefWidth="148.0" text="Synsets" />
+                                                <TableColumn fx:id="missingCompareTab" prefWidth="177.0" text="C1" />
+                                                <TableColumn prefWidth="119.0" text="C2" />
+                                                <TableColumn prefWidth="148.0" text="C2" />
+                                            </columns>
+                                          </TableView>
+                                          <Button fx:id="compareButton" layoutX="309.0" layoutY="282.0" mnemonicParsing="false" onAction="#handleCompareButtonPress" text="Compare" />
+                                          <TextField fx:id="compareInputFolder" layoutX="268.0" layoutY="10.0" prefHeight="25.0" prefWidth="303.0" promptText="Select Source Folder" />
+                                          <Button layoutX="579.0" layoutY="10.0" mnemonicParsing="false" onAction="#handleCompareTabOpened" prefHeight="25.0" prefWidth="91.0" text="Browse ..." />
+                                          <ProgressBar fx:id="compareProgressBar" layoutX="12.0" layoutY="317.0" prefHeight="18.0" prefWidth="661.0" progress="0.0" />
+                                          <CheckBox fx:id="dbUploadCheckMulti" layoutX="547.0" layoutY="295.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="126.0" selected="true" text="upload to database" />
+                                          <ComboBox fx:id="parserChooserMulti" layoutX="489.0" layoutY="43.0" prefHeight="25.0" prefWidth="182.0" promptText="Choose Parser" />
+                                          <CheckBox fx:id="exportRspXml" layoutX="547.0" layoutY="278.0" mnemonicParsing="false" prefHeight="17.0" prefWidth="124.0" text="Export rsp xml" />
+                                       </children>
+                                    </Pane>
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </Tab>
+                        <Tab text="Database config">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                                 <children>
+                                    <TextField fx:id="dbUsernameField" layoutX="375.0" layoutY="78.0" prefHeight="25.0" prefWidth="221.0" promptText="Username" text="rseidler" />
+                                    <PasswordField fx:id="dbPasswordField" layoutX="375.0" layoutY="103.0" prefHeight="25.0" prefWidth="221.0" promptText="Password" text="H7t#3f-GrT" />
+                                    <Label layoutX="375.0" layoutY="53.0" prefHeight="17.0" prefWidth="183.0" text="Database Login" />
+                                    <Label layoutX="70.0" layoutY="53.0" prefHeight="17.0" prefWidth="183.0" text="SSH Login" />
+                                    <PasswordField fx:id="sshPasswordField" layoutX="70.0" layoutY="103.0" prefHeight="25.0" prefWidth="221.0" promptText="Password" text="E64n!g9c-H5" />
+                                    <TextField fx:id="sshUsernameField" layoutX="70.0" layoutY="78.0" prefHeight="25.0" prefWidth="221.0" promptText="Username" text="rseidler" />
+                                    <TextField fx:id="dbURL" layoutX="70.0" layoutY="186.0" prefHeight="25.0" prefWidth="528.0" text="aspra8.informatik.uni-leipzig.de" />
+                                    <Label layoutX="70.0" layoutY="169.0" text="Database URL" />
+                                    <TextField fx:id="sshPort" layoutX="70.0" layoutY="128.0" prefHeight="25.0" prefWidth="221.0" promptText="port" text="22" />
+                                    <TextField fx:id="dbPort" layoutX="375.0" layoutY="128.0" prefHeight="25.0" prefWidth="221.0" promptText="port" text="3306" />
+                                 </children>
+                              </AnchorPane>
+                          </content>
+                        </Tab>
+                    </tabs>
+                  </TabPane>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
