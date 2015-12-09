@@ -13,6 +13,11 @@ import de.rsp.wdntxml.structure.Wordnet;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ * Parser for my own xml format.
+ * @author Robert Seidler
+ *
+ */
 public class RspXmlWordnetParser extends WordnetParser {
 
 	private String description;

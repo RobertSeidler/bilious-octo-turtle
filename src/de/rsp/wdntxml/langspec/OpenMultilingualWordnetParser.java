@@ -12,6 +12,11 @@ import de.rsp.wdntxml.structure.Wordnet;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ * Parser for Open Multilingual Wordnet lmf-xml files.
+ * @author Robert Seidler
+ *
+ */
 public class OpenMultilingualWordnetParser extends WordnetParser {
 
 	private final String description = "";

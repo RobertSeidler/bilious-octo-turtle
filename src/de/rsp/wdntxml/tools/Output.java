@@ -20,7 +20,6 @@ import org.jdom2.output.XMLOutputter;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
-import de.rsp.wdntxml.structure.Lexicon;
 import de.rsp.wdntxml.structure.Relation;
 import de.rsp.wdntxml.structure.Synset;
 import de.rsp.wdntxml.structure.Word;
@@ -234,27 +233,7 @@ public class Output {
 		}
 	}
 
-	public static void outToFileWordList(Lexicon lex, String outDir) {
-
-		try {
-
-			File file = new File(outDir + lex.getLang() + "WordList.out");
-			System.out.println("Writing WordList to file: " + file.getAbsolutePath());
-			PrintWriter write = new PrintWriter(file, "UTF-8");
-
-			for (Word w : lex.getWordList()) {
-				write.write(w.getWrittenForm() + " " + w.getPartOfSpeech() + "\n");
-			}
-
-			write.close();
-
-		} catch (IOException e) {
-			System.out.println("Failed writing wordlist to file.");
-			e.printStackTrace();
-		}
-	}
-
-	public static void outToFileSynsetList(Lexicon lex, String outDir) {
+	public static void outToFileSynsetList(Wordnet lex, String outDir) {
 
 		try {
 			File file = new File(outDir + lex.getLang() + "SynsetList.out");
@@ -280,7 +259,7 @@ public class Output {
 		}
 	}
 
-	public static ObservableList<String> outTextSynsetList(Lexicon lex) {
+	public static ObservableList<String> outTextSynsetList(Wordnet lex) {
 
 		List<String> list = new ArrayList<String>();
 		ObservableList<String> ol = FXCollections.observableList(list);

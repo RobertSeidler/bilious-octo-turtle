@@ -45,6 +45,10 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
+/**
+ * Controller for GUI, handles buttons and stuff.
+ * @author Robert Seidler
+ */
 public class FxController implements Initializable {
 
 	// ******************//
