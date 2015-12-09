@@ -1,5 +1,6 @@
 package de.rsp.wdntxml.langspec;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -7,6 +8,8 @@ import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
+
+import de.rsp.wdntxml.fx.Main;
 import de.rsp.wdntxml.structure.Synset;
 import de.rsp.wdntxml.structure.Word;
 import de.rsp.wdntxml.structure.Wordnet;
@@ -15,6 +18,7 @@ import javafx.collections.ObservableList;
 
 /**
  * Parser for my own xml format.
+ * 
  * @author Robert Seidler
  *
  */
@@ -33,14 +37,13 @@ public class RspXmlWordnetParser extends WordnetParser {
 
 		System.out.println("started " + getSourcePath() + " parsing.");
 		long time = System.currentTimeMillis();
-		
+
 		SAXBuilder jdomBuilder = new SAXBuilder();
 		jdomBuilder.setFeature("http://xml.org/sax/features/validation", false);
 		jdomBuilder.setFeature("http://apache.org/xml/features/nonvalidating/load-dtd-grammar", false);
 		jdomBuilder.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
 		Document doc;
 
-		
 		double progress = 0.0;
 
 		try {
@@ -48,17 +51,17 @@ public class RspXmlWordnetParser extends WordnetParser {
 			doc = jdomBuilder.build(getSourcePath());
 
 			Element lexicon = doc.getRootElement();
-			
+
 			setLanguage(lexicon.getAttributeValue("LANG"));
 
 			ObservableList<Synset> synsetList = FXCollections.observableArrayList();
-						
+
 			List<Element> synsets = lexicon.getChildren();
-			
+
 			updateProgress(0, 1);
-			
+
 			int maxProgress = synsets.size();
-			
+
 			for (Element synset : synsets) {
 
 				if (isCancelled())
@@ -84,13 +87,16 @@ public class RspXmlWordnetParser extends WordnetParser {
 				syn.setDefinition(synset.getChildText("Definition"));
 				progress += (1.0 / (double) maxProgress);
 				updateProgress(progress, 1.0);
-				
+
 				synsetList.add(syn);
 			}
 
-			System.out.println("finished " + getSourcePath() + " in " + (System.currentTimeMillis() - time) / 1000 + " sec");
+			System.out.println(
+					"finished " + getSourcePath() + " in " + (System.currentTimeMillis() - time) / 1000 + " sec");
 
-			return new Wordnet(getLanguage(), synsetList, getSourcePath(), "D:\\Programmierung\\Java Mars Programme\\WdntFx\\cfg\\relationMappingOMW.cfg");
+			String relMapFile = "cfg/relationMappingOMW.cfg";
+
+			return new Wordnet(getLanguage(), synsetList, getSourcePath(), relMapFile);
 
 		} catch (JDOMException e) {
 			// TODO Auto-generated catch block

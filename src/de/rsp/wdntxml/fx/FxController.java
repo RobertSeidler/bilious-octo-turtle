@@ -47,6 +47,7 @@ import javafx.util.Callback;
 
 /**
  * Controller for GUI, handles buttons and stuff.
+ * 
  * @author Robert Seidler
  */
 public class FxController implements Initializable {
@@ -212,7 +213,7 @@ public class FxController implements Initializable {
 
 	@FXML
 	private TextField sshPort;
-	
+
 	@FXML
 	private ProgressBar dbProgress;
 
@@ -225,7 +226,6 @@ public class FxController implements Initializable {
 		sshPort.setText(sshPort.getText().replaceAll("[^0-9]", ""));
 		dbPort.setText(dbPort.getText().replaceAll("[^0-9]", ""));
 	}
-
 
 	@FXML
 	private void handleCompareTabOpened() {
@@ -336,22 +336,28 @@ public class FxController implements Initializable {
 							xmlOutputTab.setDisable(false);
 							drawStatsTab.setDisable(false);
 							importButton.setDisable(false);
-							
+
 							dbProgress.setProgress(0);
 
-							try {
-								if (dbUploadCheckSingle.isSelected())
-									Output.outToDB(wordnet, dbURL.getText(), dbUsernameField.getText(),
-											dbPasswordField.getText(), Integer.parseInt(dbPort.getText()),
-											sshUsernameField.getText(), sshPasswordField.getText(),
-											Integer.parseInt(sshPort.getText()));
-							} catch (ClassNotFoundException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							} catch (SQLException e) {
-								// TODO Auto-generated catch block
-								e.printStackTrace();
-							}
+							Thread thread = new Thread(new Runnable() {
+								@Override
+								public void run() {
+									try {
+										if (dbUploadCheckSingle.isSelected())
+											Output.outToDB(wordnet, dbURL.getText(), dbUsernameField.getText(),
+													dbPasswordField.getText(), Integer.parseInt(dbPort.getText()),
+													sshUsernameField.getText(), sshPasswordField.getText(),
+													Integer.parseInt(sshPort.getText()));
+									} catch (ClassNotFoundException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									} catch (SQLException e) {
+										// TODO Auto-generated catch block
+										e.printStackTrace();
+									}
+								}
+							});
+							thread.start();
 						}
 					});
 			parserThread.start();
