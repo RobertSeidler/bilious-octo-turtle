@@ -28,6 +28,12 @@ import de.rsp.wdntxml.structure.Wordnet;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+/**
+ * Handles all kinds of output mechanisms.
+ * 
+ * @author Robert Seidler
+ *
+ */
 public class Output {
 
 	public static void outRelFile(Wordnet wordnet, String outDir) {
@@ -59,19 +65,34 @@ public class Output {
 		}
 	}
 
-	public static void outData(Lexicon lex, String outDir) {
-
-		outToFileWordList(lex, outDir);
-		outToFileSynsetList(lex, outDir);
-	}
-
+	/**
+	 * Writes all wordnet data to mysql database
+	 * 
+	 * @param wordnet
+	 *            datamodel to output
+	 * @param databaseUrl
+	 *            url of the database "aspra8.informatik.uni-leipzig.de" for now
+	 * @param user
+	 *            mysql username
+	 * @param pw
+	 *            mysql password
+	 * @param port
+	 *            mysql server port
+	 * @param sshUser
+	 *            ssh username
+	 * @param sshPw
+	 *            ssh password
+	 * @param sshPort
+	 *            ssh server port
+	 * 
+	 */
 	public static void outToDB(Wordnet wordnet, String databaseUrl, String user, String pw, int port, String sshUser,
 			String sshPw, int sshPort) throws SQLException, ClassNotFoundException {
 
 		long time = System.currentTimeMillis();
 
 		// ***// enable ssh connection via portforwarding
-		
+
 		int assinged_port = 0;
 		Session session = null;
 		Connection con = null;
@@ -97,7 +118,8 @@ public class Output {
 																// known_hosts
 																// file and link
 																// it
-//			System.out.println(sshUser + "@" + databaseUrl + ":" + sshPort + "\n" + sshPw);
+			// System.out.println(sshUser + "@" + databaseUrl + ":" + sshPort +
+			// "\n" + sshPw);
 			session.connect();
 
 			assinged_port = session.setPortForwardingL(lport, rhost, rport);
@@ -135,7 +157,9 @@ public class Output {
 			st.executeUpdate("CREATE TABLE wordnet_rels (synsetID1 CHAR(8), synsetID2 CHAR(8), relation VARCHAR(4));");
 			st.executeUpdate("CREATE TABLE wordnet_defs (synsetID CHAR(8), definition TEXT);");
 			st.executeUpdate("CREATE TABLE wordnet_examples (synsetID CHAR(8), example TEXT);");
-			st.executeUpdate("CREATE TABLE wordnet_relmap (relType VARCHAR(4), relMapping TEXT, relDescription TEXT);"); //TODO datentypen einschränken
+			st.executeUpdate("CREATE TABLE wordnet_relmap (relType VARCHAR(4), relMapping TEXT, relDescription TEXT);"); // TODO
+																															// datentypen
+																															// einschränken
 			// ***//
 
 			// ***// write in data
@@ -167,7 +191,7 @@ public class Output {
 						st.executeUpdate("INSERT INTO wordnet_examples (synsetID, example) VALUES (\'" + sid + "\', \'"
 								+ example.replaceAll("\'", "\'\'") + "\');");
 				}
-								
+
 			}
 			// ***// relation mapping data
 			try {
