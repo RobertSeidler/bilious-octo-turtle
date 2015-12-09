@@ -2,44 +2,21 @@ package de.rsp.wdntxml.langspec;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.input.SAXBuilder;
-
-import de.rsp.wdntxml.structure.Lexicon;
 import de.rsp.wdntxml.structure.Synset;
 import de.rsp.wdntxml.structure.Word;
 import de.rsp.wdntxml.structure.Wordnet;
-import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.concurrent.Task;
 
 public class OpenMultilingualWordnetParser extends WordnetParser {
 
-	private String lang;
-	
-	private String sourcePath;
-	
 	private final String description = "";
 	
 	private	ObservableList<Synset> synsetList = FXCollections.observableArrayList();
-
-	
-	@Override
-	public String getLanguage() {
-		// TODO Auto-generated method stub
-		return lang;
-	}
-
-	@Override
-	public void setSourcePath(String sourcePath) {
-
-		this.sourcePath = sourcePath;
-	}
 
 	@Override
 	public String getDescription() {
@@ -50,7 +27,7 @@ public class OpenMultilingualWordnetParser extends WordnetParser {
 	@Override
 	protected Wordnet call() throws Exception {
 
-		System.out.println("started " + sourcePath + " parsing.");
+		System.out.println("started " + getSourcePath() + " parsing.");
 		
 		long time = System.currentTimeMillis();
 		
@@ -62,14 +39,14 @@ public class OpenMultilingualWordnetParser extends WordnetParser {
 
 		try {
 
-			doc = jdomBuilder.build(sourcePath);
+			doc = jdomBuilder.build(getSourcePath());
 
 			double progress = 0.0;
 			updateProgress(0, 1.0);
 			
 			Element lexicon = doc.getRootElement().getChild("Lexicon");
 
-			lang = lexicon.getAttributeValue("language");
+			setLanguage(lexicon.getAttributeValue("language"));
 			
 			double maxSynsets = (double)lexicon.getChildren("Synset").size();
 			
@@ -93,16 +70,6 @@ public class OpenMultilingualWordnetParser extends WordnetParser {
 					syn.addRelation(relation.getAttributeValue("relType"), cleanUpId(relation.getAttributeValue("targets")));
 				}
 
-//				Platform.runLater(new Runnable(){
-//
-//					@Override
-//					public void run() {
-//
-//						partialResults.get().add(syn);						
-//					}
-//					
-//				});
-//				lex.addSynset(syn);
 				if (isCancelled())
 					return null;
 				progress += 0.25 / maxSynsets;
@@ -124,12 +91,10 @@ public class OpenMultilingualWordnetParser extends WordnetParser {
 				for (Element sense : lexicalEntry.getChildren("Sense")) {
 
 					getSynsetById(cleanUpId(sense.getAttributeValue("synset")))
-							.addWord(new Word(wordId, lexicalEntry.getChild("Lemma").getAttributeValue("writtenForm"), lang));
+							.addWord(new Word(wordId, lexicalEntry.getChild("Lemma").getAttributeValue("writtenForm"), getLanguage()));
 
 				}
 			}
-			
-//			lex.deleteWorthlessSynsets();
 			
 			ObservableList<Synset> newSynsetList = FXCollections.observableArrayList(new ArrayList<Synset>());
 			
@@ -145,10 +110,8 @@ public class OpenMultilingualWordnetParser extends WordnetParser {
 				updateProgress(progress, 1.0);
 			}
 			
-//			updateProgress(1.0, 1.0);
-			System.out.println("finished " + sourcePath + " in " + (System.currentTimeMillis() - time) / 1000 + " sec");
-			return new Wordnet(lang, newSynsetList, sourcePath, "D:\\Programmierung\\Java Mars Programme\\WdntFx\\cfg\\relationMappingOMW.cfg");
-//			return new Wordnet( lang, getPartialResults(), sourcePath);
+			System.out.println("finished " + getSourcePath() + " in " + (System.currentTimeMillis() - time) / 1000 + " sec");
+			return new Wordnet(getLanguage(), newSynsetList, getSourcePath(), "D:\\Programmierung\\Java Mars Programme\\WdntFx\\cfg\\relationMappingOMW.cfg");
 
 		} catch (JDOMException e) {
 			// TODO Auto-generated catch block
@@ -182,24 +145,6 @@ public class OpenMultilingualWordnetParser extends WordnetParser {
 			}
 		}
 		
-		return null;
-	}
-
-	@Override
-	public String getSourcePath() {
-
-		return sourcePath;
-	}
-
-	@Override
-	public Wordnet callCall() {
-		
-		try {
-			return call();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		return null;
 	}
 }

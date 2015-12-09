@@ -12,17 +12,14 @@ import java.nio.charset.Charset;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.jdom2.Attribute;
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
-
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
-
 import de.rsp.wdntxml.structure.Lexicon;
 import de.rsp.wdntxml.structure.Relation;
 import de.rsp.wdntxml.structure.Synset;
@@ -30,7 +27,6 @@ import de.rsp.wdntxml.structure.Word;
 import de.rsp.wdntxml.structure.Wordnet;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.ProgressBar;
 
 public class Output {
 
@@ -293,12 +289,12 @@ public class Output {
 		// <Lexicon>
 		// <Synset ID=001201043 POS=n LANG=ENG>
 		// <Words>
-		// <Word>word1</Word>
-		// <Word>word2</Word>
+		// <Word ID=012345>word1</Word>
+		// <Word ID=012346>word2</Word>
 		// </Words>
 		// <Relations>
-		// <Relation TYPE=hyponym>001241241</Relation>
-		// <Relation TYPE=synonym>001243292</Relation>
+		// <Relation TYPE=hypo>001241241</Relation>
+		// <Relation TYPE=syno>001243292</Relation>
 		// </Relations>
 		// <Definition>this is a Definition.</Definition>
 		// <Examples>

@@ -3,13 +3,9 @@ package de.rsp.wdntxml.fx;
 import java.io.File;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import de.rsp.wdntxml.langspec.RspXmlWordnetParser;
 import de.rsp.wdntxml.langspec.WordnetParser;
-import de.rsp.wdntxml.structure.Synset;
 import de.rsp.wdntxml.structure.Wordnet;
 import de.rsp.wdntxml.tools.Output;
-import javafx.application.Platform;
 import javafx.beans.property.ReadOnlyListProperty;
 import javafx.beans.property.ReadOnlyListWrapper;
 import javafx.collections.FXCollections;

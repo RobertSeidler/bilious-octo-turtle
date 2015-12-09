@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Set;
 import org.reflections.Reflections;
-import de.rsp.wdntxml.langspec.RspXmlWordnetParser;
 import de.rsp.wdntxml.langspec.WordnetParser;
 import de.rsp.wdntxml.structure.Relation;
 import de.rsp.wdntxml.structure.Synset;

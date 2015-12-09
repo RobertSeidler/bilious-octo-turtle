@@ -1,64 +1,32 @@
 package de.rsp.wdntxml.langspec;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
 import org.jdom2.JDOMException;
-import org.jdom2.input.JDOMParseException;
 import org.jdom2.input.SAXBuilder;
 import de.rsp.wdntxml.structure.Synset;
 import de.rsp.wdntxml.structure.Word;
 import de.rsp.wdntxml.structure.Wordnet;
-import javafx.application.Platform;
-import javafx.beans.property.ReadOnlyListProperty;
-import javafx.beans.property.ReadOnlyListWrapper;
-import javafx.beans.property.ReadOnlyObjectProperty;
-import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 public class RspXmlWordnetParser extends WordnetParser {
 
-	private String sourcePath;
-
-	private String lang;
-
 	private String description;
-
-	@Override
-	public void setSourcePath(String sourcePath) {
-
-		this.sourcePath = sourcePath;
-	}
 
 	@Override
 	public String getDescription() {
 
 		return description;
 	}
-	
-	/**
-	 * in case i don't want to use multi threading
-	 * @return
-	 */
-	public Wordnet callCall(){
-		
-		try {
-			return call();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
 
 	@Override
 	protected Wordnet call() throws Exception {
 
-		System.out.println("started " + sourcePath + " parsing.");
+		System.out.println("started " + getSourcePath() + " parsing.");
 		long time = System.currentTimeMillis();
 		
 		SAXBuilder jdomBuilder = new SAXBuilder();
@@ -70,19 +38,13 @@ public class RspXmlWordnetParser extends WordnetParser {
 		
 		double progress = 0.0;
 
-		// Lexicon lex;
-
 		try {
 
-//			long time = System.currentTimeMillis();
-			doc = jdomBuilder.build(sourcePath);
-			
-//			System.out.println((System.currentTimeMillis() - time) / 1000 + " sec");
+			doc = jdomBuilder.build(getSourcePath());
 
 			Element lexicon = doc.getRootElement();
-
-			// lex = new Lexicon(lexicon.getAttributeValue("LANG"));
-			lang = lexicon.getAttributeValue("LANG");
+			
+			setLanguage(lexicon.getAttributeValue("LANG"));
 
 			ObservableList<Synset> synsetList = FXCollections.observableArrayList();
 						
@@ -101,7 +63,7 @@ public class RspXmlWordnetParser extends WordnetParser {
 
 				for (Element word : synset.getChild("Words").getChildren()) {
 
-					syn.addWord(new Word(word.getAttributeValue("ID"), word.getText(), lang));
+					syn.addWord(new Word(word.getAttributeValue("ID"), word.getText(), getLanguage()));
 				}
 
 				for (Element relation : synset.getChild("Relations").getChildren()) {
@@ -119,23 +81,11 @@ public class RspXmlWordnetParser extends WordnetParser {
 				updateProgress(progress, 1.0);
 				
 				synsetList.add(syn);
-
-//				Platform.runLater(new Runnable() {
-//
-//					@Override
-//					public void run() {
-//
-////						partialResults.get().add(syn);
-//						getPartialResults().getValue().addSynset(syn);
-//					}
-//				});
-				// lex.addSynset(syn);
 			}
 
-//			return getPartialResults().getValue();
-			System.out.println("finished " + sourcePath + " in " + (System.currentTimeMillis() - time) / 1000 + " sec");
+			System.out.println("finished " + getSourcePath() + " in " + (System.currentTimeMillis() - time) / 1000 + " sec");
 
-			return new Wordnet(lang, synsetList, sourcePath, "D:\\Programmierung\\Java Mars Programme\\WdntFx\\cfg\\relationMappingOMW.cfg");
+			return new Wordnet(getLanguage(), synsetList, getSourcePath(), "D:\\Programmierung\\Java Mars Programme\\WdntFx\\cfg\\relationMappingOMW.cfg");
 
 		} catch (JDOMException e) {
 			// TODO Auto-generated catch block
@@ -147,17 +97,4 @@ public class RspXmlWordnetParser extends WordnetParser {
 
 		return null;
 	}
-
-	@Override
-	public String getLanguage() {
-
-		return lang;
-	}
-
-	@Override
-	public String getSourcePath() {
-
-		return sourcePath;
-	}
-
 }
